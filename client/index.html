@@ -23,6 +23,7 @@
     return "passive";
   };
   const flushData = (reason) => {
+    // Assuming no IE support!
     navigator.sendBeacon("/track", JSON.stringify({ data, reason }));
     data = [];
   };
