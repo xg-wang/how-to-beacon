@@ -1,0 +1,40 @@
+<script type="module">
+  let data = [];
+  let count = 0;
+  setInterval(() => {
+    if (data.length > 0) {
+      data.shift();
+    }
+    data.push({
+      index: count++,
+      time: new Date().toLocaleTimeString(),
+      timestamp: Math.round(performance.now()),
+    });
+  }, 1000);
+
+  // state managements
+  const getState = () => {
+    if (document.visibilityState === "hidden") {
+      return "hidden";
+    }
+    if (document.hasFocus()) {
+      return "active";
+    }
+    return "passive";
+  };
+  const flushData = (reason) => {
+    navigator.sendBeacon("/track", JSON.stringify({ data, reason }));
+    data = [];
+  };
+
+  // Safari has bug https://bugs.webkit.org/show_bug.cgi?id=151234
+  // still unresolved as Version 14.0.2 (16610.3.7.1.9)
+  document.addEventListener("visibilitychange", () => {
+    if (getState() === "hidden") {
+      flushData("hidden");
+    }
+  });
+  window.addEventListener("beforeunload", () => {
+    flushData("beforeunload");
+  });
+</script>
