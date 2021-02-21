@@ -2,6 +2,8 @@
 
 Demo how to beacon data from browser to server *reliably*.
 
+Read the post on https://dev.to/xgwang/you-may-not-know-beacon-9ba
+
 ## TL;DR
 
 Use `navigator.sendBeacon` on `visibilitychange` and `beforeunload` event. Once your lowest browser supports https://bugs.webkit.org/show_bug.cgi?id=151234 fires on `visibilitychange` only.
